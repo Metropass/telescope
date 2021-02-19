@@ -24,7 +24,7 @@ async function stopWebServer() {
     await serverClose();
     logger.info('Web server shut down.');
   } catch (error) {
-    logger.error({ error }, 'Unable to close web server gracefully');
+    logger.debug({ error }, 'Unable to close web server gracefully');
   }
 }
 
@@ -33,7 +33,7 @@ async function cleanShutdown() {
     await Promise.all([stopQueue(), stopWebServer()]);
     logger.info('Completing shut down.');
   } catch (error) {
-    logger.error({ error }, 'Failed to perform clean shutdown');
+    logger.debug({ error }, 'Failed to perform clean shutdown');
   }
 }
 
@@ -52,7 +52,7 @@ function shutdown(signal) {
 
     // If our attempts to shut down cleanly don't work, force it
     setTimeout(() => {
-      logger.error('Could not close connections in time, forcefully shutting down');
+      logger.debug('Could not close connections in time, forcefully shutting down');
       logger.flush();
       process.exit(1);
     }, 10000).unref();
